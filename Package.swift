@@ -1,21 +1,19 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 import PackageDescription
 
 let package = Package(
     name: "TTTAttributedLabel",
-    platforms: [.iOS(.v9)],
     products: [
-        .library(
-            name: "TTTAttributedLabel",
-            targets: ["TTTAttributedLabel"]
-        )
+        .library(name: "TTTAttributedLabel", targets: ["TTTAttributedLabel"])
     ],
     targets: [
         .target(
             name: "TTTAttributedLabel",
             path: "TTTAttributedLabel",
-            exclude: ["Example", "Carthage"],
-            publicHeadersPath: "."
+            publicHeadersPath: "",
+            cSettings: [
+                .headerSearchPath("")
+            ]
         )
     ]
 )
