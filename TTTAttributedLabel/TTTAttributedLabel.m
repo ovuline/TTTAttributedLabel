@@ -713,7 +713,9 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [textStorage addLayoutManager:layoutManager];
 
-    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:self.bounds.size];
+    CGSize size = CGSizeMake(self.bounds.size.width, CGFLOAT_MAX);
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:size];
+    textContainer.lineFragmentPadding = 0.0;
     [layoutManager addTextContainer:textContainer];
 
     NSRange glyphRange;
