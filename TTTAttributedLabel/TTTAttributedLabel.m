@@ -576,7 +576,21 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 }
 
 - (TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point {
-    
+    // If VoiceOver is enabled, use the UIAccessibility system to find the focused link.
+    if (UIAccessibilityIsVoiceOverRunning()) {
+        if (@available(iOS 11.0, *)) {
+            UIAccessibilityElement *focusedElement =
+            UIAccessibilityFocusedElement(UIAccessibilityNotificationVoiceOverIdentifier);
+            NSString *accessibilityLabel = focusedElement.accessibilityAttributedLabel.string;
+            for (TTTAttributedLabelLink *link in self.linkModels) {
+                NSString *linkText = [self.text substringWithRange:link.result.range];
+                if ([accessibilityLabel isEqualToString:linkText]) {
+                    return link;
+                }
+            }
+        }
+    }
+
     // Stop quickly if none of the points to be tested are in the bounds.
     if (!CGRectContainsPoint(CGRectInset(self.bounds, -15.f, -15.f), point) || self.links.count == 0) {
         return nil;
